@@ -1,4 +1,14 @@
-	DROP DATABASE IF EXISTS DataWarehouse
+/* 
+==================================================================================
+DDL Script : Create Bronze tables
+==================================================================================
+Script purpose:
+	This script creates tables in the bronze schema, dropping existing tablesif 
+	they already exist 
+	Run this script to re-define the DDL structure od bronze tables
+==================================================================================
+*/
+DROP DATABASE IF EXISTS DataWarehouse
 	GO 
 
 	CREATE DATABASE DataWarehouse
@@ -78,4 +88,5 @@ CREATE TABLE bronze_Transactions_details (
 	,CustomerCart_CustomerID INT
 	,Cashier_CashierID INT
 )
+
 SELECT * FROM bronze_Transactions_details
