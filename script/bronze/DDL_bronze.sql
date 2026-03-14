@@ -1,93 +1,92 @@
-/* 
-==================================================================================
-DDL Script : Create Bronze tables
-==================================================================================
-Script purpose:
-	This script creates tables in the bronze schema, dropping existing tablesif 
-	they already exist 
-	Run this script to re-define the DDL structure od bronze tables
-==================================================================================
+/*
+===============================================================================
+DDL Script: Create Bronze Tables
+===============================================================================
+Script Purpose:
+    This script creates tables in the 'bronze' schema, dropping existing tables 
+    if they already exist.
+	  Run this script to re-define the DDL structure of 'bronze' Tables
+===============================================================================
 */
-DROP DATABASE IF EXISTS DataWarehouse
-	GO 
+CREATE SCHEMA bronze;
+GO
 
-	CREATE DATABASE DataWarehouse
-	GO
+IF OBJECT_ID('bronze.crm_cust_info', 'U') IS NOT NULL
+    DROP TABLE bronze.crm_cust_info;
+GO
 
-	USE DataWarehouse
-	
+CREATE TABLE bronze.crm_cust_info (
+    cst_id              INT,
+    cst_key             NVARCHAR(50),
+    cst_firstname       NVARCHAR(50),
+    cst_lastname        NVARCHAR(50),
+    cst_marital_status  NVARCHAR(50),
+    cst_gndr            NVARCHAR(50),
+    cst_create_date     DATE
+);
+GO
 
-DROP TABLE IF EXISTS bronze_Customer_info
+IF OBJECT_ID('bronze.crm_prd_info', 'U') IS NOT NULL
+    DROP TABLE bronze.crm_prd_info;
+GO
 
-CREATE TABLE bronze_Customer_info (
-	CustomerName NVARCHAR(50)
-	,CustomerPhNo NVARCHAR (50)
-	,CustomerAddress NVARCHAR(120)
-	,Password NVARCHAR(50)
-)
+CREATE TABLE bronze.crm_prd_info (
+    prd_id       INT,
+    prd_key      NVARCHAR(50),
+    prd_nm       NVARCHAR(50),
+    prd_cost     INT,
+    prd_line     NVARCHAR(50),
+    prd_start_dt DATETIME,
+    prd_end_dt   DATETIME
+);
+GO
 
+IF OBJECT_ID('bronze.crm_sales_details', 'U') IS NOT NULL
+    DROP TABLE bronze.crm_sales_details;
+GO
 
-DROP TABLE IF EXISTS bronze_Branch_info
+CREATE TABLE bronze.crm_sales_details (
+    sls_ord_num  NVARCHAR(50),
+    sls_prd_key  NVARCHAR(50),
+    sls_cust_id  INT,
+    sls_order_dt INT,
+    sls_ship_dt  INT,
+    sls_due_dt   INT,
+    sls_sales    INT,
+    sls_quantity INT,
+    sls_price    INT
+);
+GO
 
-CREATE TABLE bronze_Branch_info (
-	Brand_Id TINYINT
-	,Brand_Name NVARCHAR(12)
-)
+IF OBJECT_ID('bronze.erp_loc_a101', 'U') IS NOT NULL
+    DROP TABLE bronze.erp_loc_a101;
+GO
 
+CREATE TABLE bronze.erp_loc_a101 (
+    cid    NVARCHAR(50),
+    cntry  NVARCHAR(50)
+);
+GO
 
-DROP TABLE IF EXISTS bronze_BranchProduct_info
+IF OBJECT_ID('bronze.erp_cust_az12', 'U') IS NOT NULL
+    DROP TABLE bronze.erp_cust_az12;
+GO
 
-CREATE TABLE bronze_BranchProduct_info (
-	Brands_Brand_id TINYINT
-	,Products_ProductID NVARCHAR(50)
-)
+CREATE TABLE bronze.erp_cust_az12 (
+    cid    NVARCHAR(50),
+    bdate  DATE,
+    gen    NVARCHAR(50)
+);
+GO
 
+IF OBJECT_ID('bronze.erp_px_cat_g1v2', 'U') IS NOT NULL
+    DROP TABLE bronze.erp_px_cat_g1v2;
+GO
 
-DROP TABLE IF EXISTS bronze_Product_info
-
-CREATE TABLE bronze_Product_info (
-	ProductID NVARCHAR (50)
-	,ProductName NVARCHAR(500)
-	,ProductStock NVARCHAR(20)
-	,Price NVARCHAR(120)
-	,Discount NVARCHAR(20)
-	,Category_CategoryID NVARCHAR(20)
-)
-
-
-DROP TABLE IF EXISTS bronze_Cashier_info
-
-CREATE TABLE bronze_Cashier_info (
-	CashierID TINYINT
-	,CashierName NVARCHAR(20)
-	,CashierPhoneNo NVARCHAR (50)
-	,CashierAddress NVARCHAR(50)
-)
-
-
-DROP TABLE IF EXISTS bronze_Categories_info
-
-CREATE TABLE bronze_Categories_info (
-	CategoryId TINYINT
-	,Category NVARCHAR(50)
-	,SubCategory NVARCHAR(50)
-)
-
-
-DROP TABLE IF EXISTS bronze_Transactions_details
-
-CREATE TABLE bronze_Transactions_details (
-	Transaction_date DATE
-	,Quantity INT
-	,Subtotal NVARCHAR(250)
-	,Taxes NVARCHAR(250)	
-	,DiscountPrice NVARCHAR(250)
-	,TotalAmount NVARCHAR(250)
-	,Payment_Method NVARCHAR(250)
-	,Products_ProductID NVARCHAR(250)
-	,CustomerCart_CustomerID INT
-	,Cashier_CashierID INT
-)
-
-SELECT * FROM bronze_Transactions_details
-
+CREATE TABLE bronze.erp_px_cat_g1v2 (
+    id           NVARCHAR(50),
+    cat          NVARCHAR(50),
+    subcat       NVARCHAR(50),
+    maintenance  NVARCHAR(50)
+);
+GO
